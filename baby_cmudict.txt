@@ -1,0 +1,10 @@
+abate AH0 B EY1 T
+abated AH0 B EY1 T IH0 D
+abbot AE1 B AH0 T
+abbreviate AH0 B R IY1 V IY0 EY2 T
+abbreviates AH0 B R IY1 V IY0 EY2 T S
+abdicate AE1 B D AH0 K EY2 T
+abdicated AE1 B D AH0 K EY2 T IH0 D
+abdomen AE0 B D OW1 M AH0 N
+aberdeen AE1 B ER0 D IY2 N
+test IH0 D
