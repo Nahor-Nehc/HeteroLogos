@@ -1,1 +1,4 @@
 __pycache__/Trie.cpython-312.pyc
+*.pyc
+temp.py
+.DS_Store
