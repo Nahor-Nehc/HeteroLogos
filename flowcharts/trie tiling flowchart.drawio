@@ -1,0 +1,77 @@
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="RzQnTTjgMECUQ-e-5rMe">
+        <mxGraphModel dx="1328" dy="824" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="9ZZvaG-p1ZHHNaZorZv_-1" target="SE6sLATSJ9-9Gvu3y-3g-2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9ZZvaG-p1ZHHNaZorZv_-1" value="Start&lt;div&gt;Input:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;list of phonemes&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="40" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-2" target="SE6sLATSJ9-9Gvu3y-3g-12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-2" value="Words = {}" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-4" target="SE6sLATSJ9-9Gvu3y-3g-6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-8" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="SE6sLATSJ9-9Gvu3y-3g-7" connectable="0" vertex="1">
+                    <mxGeometry x="0.1" y="-1" relative="1" as="geometry">
+                        <mxPoint x="11" y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-4" target="SE6sLATSJ9-9Gvu3y-3g-9" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-11" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="SE6sLATSJ9-9Gvu3y-3g-10" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2286" y="3" relative="1" as="geometry">
+                        <mxPoint x="-3" y="1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-4" value="Reached the&lt;div&gt;end of the list of phonemes?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="470" width="120" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-6" value="Return Words" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="495" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-9" target="SE6sLATSJ9-9Gvu3y-3g-27" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-9" value="Get the next phoneme" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="495" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-12" target="SE6sLATSJ9-9Gvu3y-3g-4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-12" value="Current node = ROOT" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="330" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-27" target="SE6sLATSJ9-9Gvu3y-3g-29" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-27" value="Find how close it matches to any of the children of the ROOT (find the score)" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="495" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-29" target="SE6sLATSJ9-9Gvu3y-3g-31" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-29" value="Prune the children that are too far away" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="860" y="495" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SE6sLATSJ9-9Gvu3y-3g-31" target="SE6sLATSJ9-9Gvu3y-3g-37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-31" value="For each unpruned child:" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1060" y="495" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="SE6sLATSJ9-9Gvu3y-3g-37" value="Add all words that terminate at the child to the words and its overall score" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1260" y="495" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
