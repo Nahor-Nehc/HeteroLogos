@@ -1,5 +1,7 @@
 from Phoneme import Phoneme
 
+#! move to components once completed
+
 class TrieNode:
     def __init__(self):
         self.children:dict[Phoneme, TrieNode] = {}       # phoneme -> TrieNode
@@ -21,7 +23,6 @@ class PhonemeTrie:
         return "\n".join(lines)
 
     def _str_helper(self, node, prefix, lines, is_root):
-        #* refactor to use Phoneme
         if self._current_print_depth > self._max_print_depth:
             return None
         
@@ -44,30 +45,28 @@ class PhonemeTrie:
     def insert(self, phonemes: list[str], word: str):
         """Insert a word indexed by its phoneme sequence."""
         
-        #* refactor to use Phoneme
         node = self.root
-        print(phonemes)
         for p in phonemes:
-            print(p)
+            
+            # get the components of the phoneme
             string = p
             stress = -1
             if p[-1].isnumeric():
-                print("yes")
                 stress = int(p[-1])
                 string = p[:-1]
-            
             phoneme = Phoneme(string=string, stress=stress)
-            print(phoneme)
             
+            # check if new child needs to be created
             if phoneme not in node.children:
                 node.children[phoneme] = TrieNode()
             
+            # go to the next node
             node = node.children[phoneme]
+            
         node.words.append(word)  # terminal node stores the word
 
     def find_words_at_prefix(self, phonemes: list[Phoneme]) -> list[str]:
         """Return all words whose phoneme sequence exactly matches the given prefix."""
-        #* refactor to use Phoneme
         node = self.root
         for phoneme in phonemes:
             if phoneme not in node.children:
@@ -85,10 +84,10 @@ class PhonemeTrie:
         # complexity and strength which we can pass into the helper _tile
         
         results = {}
-        self._tile(phonemes, 0, self.root, [], 0, results)
+        self._tile(phonemes, 0, self.root, [], False, 0, results)
         return results
 
-    def get_all_words(self, start_node:TrieNode=None):
+    def get_all_words(self, start_node:TrieNode=None, inclusive:bool=True):
         
         if start_node is None:
             start_node = self.root
@@ -98,8 +97,11 @@ class PhonemeTrie:
         
         while stack:
             node = stack.pop()
-            words.extend(node.words)
             
+            # check if we want the first node's words
+            if node != start_node or inclusive:
+                words.extend(node.words)
+                
             stack.extend(node.children.values())
         
         return words
@@ -107,17 +109,44 @@ class PhonemeTrie:
     
     def _tile(self, phonemes:list[Phoneme], position:int,
               current_node:TrieNode, current_sentence:list[str],
-              current_score:int, results:dict[list[str]:int]):
+              word_added:bool,
+              current_score:int, results:dict[tuple[str], int]):
+        """Recursively tiles the list of phonemes with a list of words
+
+        :param phonemes: the list of phonemes to tile
+        :type phonemes: list[Phoneme]
+        :param position: the location to start tiling
+        :type position: int
+        :param current_node: node of the Trie to start
+        :type current_node: TrieNode
+        :param current_sentence: the current sentence accumulated
+        :type current_sentence: list[str]
+        :param word added: if a word was just added
+        :type word added: bool
+        :param current_score: the score of the current sentence
+        :type current_score: int
+        :param results: a dictionary of the results. the key is the
+        tuple of words and the value is the score
+        :type results: dict[tuple[str], int]
+        """        
+        
+        
         print()
         print(f"_tile: {phonemes}, pos {position}")
         
         # check we have reached the end
         if position >= len(phonemes):
             if current_sentence:
-                #! flush the rest of the node and add to results
                 
-                # add the accumulated sentence to the results
-                results[tuple(current_sentence)] = current_score
+                # check enough syllables
+                if word_added:
+                    # add the accumulated sentence to the results
+                    results[tuple(current_sentence)] = current_score
+                    
+                else:
+                    # flush the rest of the node and add to results
+                    remaining_words = self.get_all_words(current_node, False)
+                    
             return None
         
         # check node has no more children
@@ -136,7 +165,7 @@ class PhonemeTrie:
             child_distance = phoneme.distance(child_phoneme)
             scored_children.append((child_phoneme, child_distance))
         
-        # take the best scores
+        # take the best scores (lowest)
         scored_children.sort(key=lambda x: x[1])
         nodes_to_check = scored_children[:5]        #? temporary solution
         print(nodes_to_check)
@@ -154,20 +183,21 @@ class PhonemeTrie:
                         position=position+1,
                         current_node=self.root,
                         current_sentence=current_sentence + [word],
+                        word_added=True,
                         current_score=current_score + child_score,
                         results=results)
                     
 
-            else:
-                # otherwise tile on child node
-                self._tile(
-                    phonemes=phonemes,
-                    position=position+1,
-                    current_node=current_node.children[child_phoneme],
-                    current_sentence=current_sentence, 
-                    current_score=current_score + child_score,
-                    results=results
-                )
+            # then tile on child node
+            self._tile(
+                phonemes=phonemes,
+                position=position+1,
+                current_node=current_node.children[child_phoneme],
+                current_sentence=current_sentence, 
+                word_added=False,
+                current_score=current_score + child_score,
+                results=results
+            )
             
         
         

@@ -1,6 +1,13 @@
 
 
+#! move to components once completed
+
 class Phoneme:
+    """
+    A class which represents a stressed phoneme by using its ARPABET string
+    and a stress value. It contains a method to calculate the distance
+    between two Phonemes
+    """
     def __init__(self, string:str="", stress:int=-1):
         self.string:str = string
         
@@ -8,8 +15,11 @@ class Phoneme:
         self.stress:int = stress
     
     def __str__(self):
-        return f"{self.string}{self.stress}" if self.stress != -1 else self.string
-    
+        if self.stress != -1:
+            return f"{self.string}{self.stress}"
+        else:
+            return self.string
+            
     def __repr__(self):
         return self.__str__()
     
