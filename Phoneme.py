@@ -1,5 +1,4 @@
 
-
 #! move to components once completed
 
 class Phoneme:
@@ -8,6 +7,7 @@ class Phoneme:
     and a stress value. It contains a method to calculate the distance
     between two Phonemes
     """
+    
     def __init__(self, string:str="", stress:int=-1):
         self.string:str = string
         
@@ -34,20 +34,16 @@ class Phoneme:
         # True at the same time
         return not(self == other)
 
-    def distance(self, other:"Phoneme"):
+    def distance(self, other:"Phoneme", pdm=None):
         # this method necessarily needs to be symmetric
         
-        if self == other:
-            return 0
-        
-        #! temp
-        elif self.string == other.string:
-            return 1
-        else:
-            return 100
+        if pdm is None:
+            raise ValueError("PhonemeDistanceMatrix not loaded. Call Phoneme.load_pdm()")
         
         # calculate the difference in the string 
+        distance_string = pdm[self][other]
         
+        #! calculate the difference in the stress
+        distance_stress = 0
         
-        # calculate the difference in the stress
-        
+        return distance_string + distance_stress

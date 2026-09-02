@@ -1,4 +1,7 @@
+import os
+
 from Phoneme import Phoneme
+from PhonemeDistanceMatrix import PhonemeDistanceMatrix
 
 #! move to components once completed
 
@@ -11,6 +14,12 @@ class TrieNode:
 class PhonemeTrie:
     def __init__(self):
         self.root = TrieNode()
+        self.pdm = PhonemeDistanceMatrix(
+            os.path.join("assets", "arpabet_ch_distance_matrix.csv"))
+        
+        # scoring parameters
+        self.spw_threshold = 2 # score per word threshold
+        self.max_children_checked = 2
         
         # use this for debugging mainly
         self._max_print_depth = 50
@@ -131,8 +140,8 @@ class PhonemeTrie:
         """        
         
         
-        print()
-        print(f"_tile: {phonemes}, pos {position}")
+        # print()
+        # print(f"_tile: {phonemes}, pos {position}")
         
         # check we have reached the end
         if position >= len(phonemes):
@@ -155,20 +164,30 @@ class PhonemeTrie:
             # sentences down this branch which can tile the phonemes
             return None
         
+        # calculate the score per word
+        if current_sentence:
+            if current_score/len(current_sentence) >= self.spw_threshold:
+                return None
+        
         # get the next phoneme
         phoneme = phonemes[position]
-        print("next phoneme:", phoneme)
+        # print("next phoneme:", phoneme)
         
         # score against all children
         scored_children:list[tuple[Phoneme, int]] = []
         for child_phoneme, child_node in current_node.children.items():
-            child_distance = phoneme.distance(child_phoneme)
+            
+            # score strength
+            child_distance = phoneme.distance(child_phoneme, self.pdm)
+            
             scored_children.append((child_phoneme, child_distance))
         
         # take the best scores (lowest)
         scored_children.sort(key=lambda x: x[1])
-        nodes_to_check = scored_children[:5]        #? temporary solution
-        print(nodes_to_check)
+        #? temporary solution
+        nodes_to_check = scored_children[:self.max_children_checked]
+        
+        # print(nodes_to_check)
         
         for child_phoneme, child_score in nodes_to_check:
             # check there are terminating words
@@ -176,6 +195,11 @@ class PhonemeTrie:
             
             if words:
                 for word in words:
+                    
+                    # score complexity
+                    #? temporary solution -> longer words means better score
+                    #? penalise short words
+                    child_score /= 2**len(word) / 8
                     
                     # tile on root node
                     self._tile(
@@ -256,4 +280,4 @@ if __name__ == "__main__":
     import re
     import time, pickle
     
-    create_baby_trie()
+    create_trie()

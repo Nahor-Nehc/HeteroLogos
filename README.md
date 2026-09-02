@@ -84,7 +84,14 @@ Contains the ARPABET string representation and the stress given by CMUdict
 
 The difference in stress is not too important but can improve the strength of the heterology. The difference between stressed and unstressed to primary and secondary stress is larger (and prioritised).
 
-It contains the method used for finding the distance between two phonemes using (!!!!)
+It contains the method used for finding the distance between two phonemes.
+Naive method: we will use the SPE feature vectors and calculate a simple Hamming distance between the features of the feature vectors. We will use a PhonemeDistanceMatrix to hold the pre-calculated values for the phonemes' distance.
+
+Complex method:
+- use SPE feature vector as baseline
+- compute weights for each feature from confusion matricies in research (consonants)
+- validate for vowels
+
 
 ##### Search
 
