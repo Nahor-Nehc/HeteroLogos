@@ -1,3 +1,8 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from PhonemeDistanceMatrix import PhonemeDistanceMatrix
 
 #! move to components once completed
 
@@ -34,7 +39,7 @@ class Phoneme:
         # True at the same time
         return not(self == other)
 
-    def distance(self, other:"Phoneme", pdm=None):
+    def distance(self, other:"Phoneme", pdm:PhonemeDistanceMatrix|None=None) -> float:
         # this method necessarily needs to be symmetric
         
         if pdm is None:

@@ -87,7 +87,7 @@ The difference in stress is not too important but can improve the strength of th
 It contains the method used for finding the distance between two phonemes.
 Naive method: we will use the SPE feature vectors and calculate a simple Hamming distance between the features of the feature vectors. We will use a PhonemeDistanceMatrix to hold the pre-calculated values for the phonemes' distance.
 
-Complex method:
+Complex method: ??????
 - use SPE feature vector as baseline
 - compute weights for each feature from confusion matricies in research (consonants)
 - validate for vowels
@@ -99,4 +99,24 @@ Complex method:
 The inputs are the trie and the list of phonemes to match.
 Once the end of the overhang is hit by the search, we can just output every word left in the subtree.
 
-We start (!!!)
+We start a recursive search where each recursive state contains the following information:
+- position: current input phoneme index
+- current node: current trie position
+- current sentence: words found so far
+- word added: whether a word ended recently
+- current score: accumulated phoneme distance
+- results: dictionary mapping word tuples ("sentences") to scores
+
+We compare the current input phoneme with every child phoneme of the current node using the Phoneme's distance method
+
+We then only proceed down to the children which meet a criteria/score threshold (!!!) in order to cut down the search space
+
+If the child node contains words, we can add that word to the current sentence, then recursively search for matches for the next input phoneme -- passing on an updated score as well, and setting the next trie node to search to be the root.
+
+We then explore the same child (supposing it does not end on a word), recursively searching for a match for the next input phoneme but setting the next trie node to search to be the child.
+
+Once we reach the end of the , we add the accumulated sentence to the results.
+
+##### Search Pruning
+
+We need a way to cut down the search space because the CMUdict contains a vast quantity of possible words

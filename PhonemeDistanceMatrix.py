@@ -14,7 +14,7 @@ class PhonemeDistanceRow:
         for i in range(len(row_data)):
             self._dict[row_headers[i]] = float(row_data[i])
 
-    def __getitem__(self, item) -> float:
+    def __getitem__(self, item:str|Phoneme) -> float:
         if isinstance(item, Phoneme):
             item = item.string
                     
@@ -43,6 +43,7 @@ class PhonemeDistanceMatrix:
         headers = data[0].strip().split(",")[1:]
         for line in data[1:]:
             phoneme, *values = line.strip().split(",")
+            values = [float(value) for value in values]
             row = PhonemeDistanceRow(values, headers)
             self._dict[phoneme] = row
         

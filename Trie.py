@@ -8,8 +8,8 @@ from PhonemeDistanceMatrix import PhonemeDistanceMatrix
 class TrieNode:
     def __init__(self):
         self.children:dict[Phoneme, TrieNode] = {}       # phoneme -> TrieNode
-        self.stress:int = None   # stress -> allows us to calculate strength
-        self.words = []          # words that end at this node (handles homophones)
+        self.stress:int | None = None   # stress -> allows us to calculate strength
+        self.words:list[str] = []          # words that end at this node (handles homophones)
 
 class PhonemeTrie:
     def __init__(self):
@@ -19,13 +19,13 @@ class PhonemeTrie:
         
         # scoring parameters
         self.spw_threshold = 2 # score per word threshold
-        self.max_children_checked = 2
+        self.max_children_checked = 4
         
         # use this for debugging mainly
         self._max_print_depth = 50
         self._current_print_depth = 0
     
-    def __str__(self):
+    def __str__(self) -> str:
         self._current_print_depth = 0
         lines = []
         self._str_helper(self.root, prefix="", lines=lines, is_root=True)
@@ -83,7 +83,7 @@ class PhonemeTrie:
             node = node.children[phoneme]
         return node.words  # only words that terminate exactly here
 
-    def find_tilings(self, phonemes: list[str]) -> list[list[str]]:
+    def find_tilings(self, phonemes: list[Phoneme]) -> dict[tuple[str, ...], float]:
         """
         Find all ways to tile the phoneme sequence with known words.
         Returns a list of sentences (each sentence is a list of words).
@@ -96,7 +96,7 @@ class PhonemeTrie:
         self._tile(phonemes, 0, self.root, [], False, 0, results)
         return results
 
-    def get_all_words(self, start_node:TrieNode=None, inclusive:bool=True):
+    def get_all_words(self, start_node: TrieNode|None=None, inclusive: bool=True) -> list[str]:
         
         if start_node is None:
             start_node = self.root
@@ -119,7 +119,7 @@ class PhonemeTrie:
     def _tile(self, phonemes:list[Phoneme], position:int,
               current_node:TrieNode, current_sentence:list[str],
               word_added:bool,
-              current_score:int, results:dict[tuple[str], int]):
+              current_score:float, results:dict[tuple[str, ...], float]):
         """Recursively tiles the list of phonemes with a list of words
 
         :param phonemes: the list of phonemes to tile
@@ -133,10 +133,10 @@ class PhonemeTrie:
         :param word added: if a word was just added
         :type word added: bool
         :param current_score: the score of the current sentence
-        :type current_score: int
+        :type current_score: float
         :param results: a dictionary of the results. the key is the
         tuple of words and the value is the score
-        :type results: dict[tuple[str], int]
+        :type results: dict[tuple[str], float]
         """        
         
         
@@ -156,6 +156,9 @@ class PhonemeTrie:
                     # flush the rest of the node and add to results
                     remaining_words = self.get_all_words(current_node, False)
                     
+                    for remaining_word in remaining_words:
+                        results[tuple(current_sentence + [remaining_word])] = current_score
+                    
             return None
         
         # check node has no more children
@@ -174,7 +177,7 @@ class PhonemeTrie:
         # print("next phoneme:", phoneme)
         
         # score against all children
-        scored_children:list[tuple[Phoneme, int]] = []
+        scored_children:list[tuple[Phoneme, float]] = []
         for child_phoneme, child_node in current_node.children.items():
             
             # score strength
@@ -222,9 +225,6 @@ class PhonemeTrie:
                 current_score=current_score + child_score,
                 results=results
             )
-            
-        
-        
             
         
 
