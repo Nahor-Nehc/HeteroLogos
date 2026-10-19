@@ -1,0 +1,39 @@
+IPA,Vic,Place,Place_Value,Manner,Manner_Value,V,Syl,Voi,Nas,Lat,Asp,High,High_Value,Back,Back_Value,Rou,Lon,Example
+ɑː,aa,velar,60,low vowel,0,1,100,100,0,0,0,low,0,central,50,0,100,Barbara
+æ,ae,palatal,70,low vowel,0,1,100,100,0,0,0,low,0,front,100,0,0,cat
+ə,ah,velar,60,mid vowel,20,1,100,100,0,0,0,mid,50,central,50,0,0,banana
+ɔː,ao,velar,60,low vowel,0,1,100,100,0,0,0,low,0,central,50,100,100,absorb
+aʊ,aw,velar,62,low vowel+high vowel,16,1,100,100,0,,,low+high,40,back,30,40,100,out
+aj,ay,palatal,70,low vowel+high vowel,16,1,100,100,0,,,low+high,40,central+front,70,0,100,side
+b,b,bilabial,100,stop,100,0,0,100,0,0,0,,,,,,,bar
+tʃ,ch,palato-alveolar,75,affricate,90,0,0,0,0,0,0,,,,,,,chat
+d,d,alveolar,85,stop,100,0,0,100,0,0,0,,,,,,,den
+ð,dh,dental,90,fricative,80,0,0,100,0,0,0,,,,,,,they
+ɛ,eh,palatal,70,mid vowel,20,1,100,100,0,,,mid,50,front,100,0,0,bell
+ɜː,er,velar,60,mid vowel,20,1,100,100,0,,,mid,50,central,50,0,100,fur
+ɛj,ey,palatal,70,mid vowel+high vowel,28,1,100,100,0,,,mid+high,70,front,100,0,100,weigh
+f,f,labiodental,95,fricative,80,0,0,0,0,0,0,,,,,,,fin
+g,g,velar,60,stop,100,0,0,100,0,0,0,,,,,,,gone
+h,hh,glottal,10,fricative,80,0,0,0,0,0,0,,,,,,,ham
+ɪ,ih,palatal,70,mid vowel,20,1,100,100,0,,,mid,50,front,100,0,0,sit
+iː,iy,palatal,70,high vowel,40,1,100,100,0,,,high,100,front,100,0,100,feel
+dʒ,jh,palato-alveolar,75,affricate,90,0,0,100,0,0,0,,,,,,,gem
+k,k,velar,60,stop,100,0,0,0,0,0,100,,,,,,,car
+l,l,alveolar,85,approximant,60,0,0,100,0,100,0,,,,,,,lid
+m,m,bilabial,100,stop,100,0,0,100,100,0,0,,,,,,,mid
+n,n,alveolar,85,stop,100,0,0,100,100,0,0,,,,,,,nod
+ŋ,ng,velar,60,stop,100,0,0,100,100,0,0,,,,,,,gong
+oʊ,ow,velar,62,mid vowel+high vowel,28,1,100,100,0,,,mid+high,70,back,0,100,100,low
+ɔj,oy,velar+palatal,64,mid vowel+high vowel,28,1,100,100,0,,,mid+high,70,back+front,40,0,0,boy
+p,p,bilabial,100,stop,100,0,0,0,0,0,100,,,,,,,pod
+r,r,alveolar,85,approximant,60,0,0,100,0,0,0,,,,,,,red
+s,s,alveolar,85,fricative,80,0,0,0,0,0,0,,,,,,,set
+ʃ,sh,palato-alveolar,75,fricative,80,0,0,0,0,0,0,,,,,,,shed
+t,t,alveolar,85,stop,100,0,0,0,0,0,100,,,,,,,ton
+θ,th,dental,90,fricative,80,0,0,0,0,0,0,,,,,,,thin
+ʊ,uh,velar,60,high vowel,40,1,100,100,0,,,high,100,back,0,0,0,book
+uː,uw,velar,60,high vowel,40,1,100,100,0,,,high,100,back,0,100,100,noon
+v,v,labiodental,95,fricative,80,0,0,100,0,0,0,,,,,,,van
+w,w,velar+bilabial,80,approximant,60,0,0,100,0,0,0,,,,,,,with
+j,y,velar,60,approximant,60,0,0,100,0,0,0,,,,,,,year
+z,z,alveolar,85,fricative,80,0,0,0,0,0,0,,,,,,,zoo
