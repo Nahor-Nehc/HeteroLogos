@@ -1,6 +1,4 @@
-from Phoneme import Phoneme
-
-#! move to components once completed
+from components.Phoneme import Phoneme
 
 
 class PhonemeDistanceRow:

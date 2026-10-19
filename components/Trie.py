@@ -1,9 +1,8 @@
 import os
 
-from Phoneme import Phoneme
-from PhonemeDistanceMatrix import PhonemeDistanceMatrix
+from components.Phoneme import Phoneme
+from components.PhonemeDistanceMatrix import PhonemeDistanceMatrix
 
-#! move to components once completed
 
 class TrieNode:
     def __init__(self):

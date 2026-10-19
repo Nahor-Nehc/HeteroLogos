@@ -1,7 +1,7 @@
 import pickle
-from Trie import PhonemeTrie, TrieNode
-from Phoneme import Phoneme
-from PhonemeDistanceMatrix import PhonemeDistanceMatrix
+from components.Trie import PhonemeTrie, TrieNode
+from components.Phoneme import Phoneme
+from components.PhonemeDistanceMatrix import PhonemeDistanceMatrix
 
 import json
 

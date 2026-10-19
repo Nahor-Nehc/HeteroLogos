@@ -2,9 +2,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from PhonemeDistanceMatrix import PhonemeDistanceMatrix
+    from components.PhonemeDistanceMatrix import PhonemeDistanceMatrix
 
-#! move to components once completed
 
 class Phoneme:
     """
