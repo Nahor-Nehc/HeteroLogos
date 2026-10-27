@@ -11,22 +11,22 @@ class Phoneme:
     and a stress value. It contains a method to calculate the distance
     between two Phonemes
     """
-    
-    def __init__(self, string:str="", stress:int=-1):
-        self.string:str = string
-        
+
+    def __init__(self, string: str = "", stress: int = -1):
+        self.string: str = string
+
         # if there is no stress (i.e. consonant) this is -1
-        self.stress:int = stress
-    
+        self.stress: int = stress
+
     def __str__(self):
         if self.stress != -1:
             return f"{self.string}{self.stress}"
         else:
             return self.string
-            
+
     def __repr__(self):
         return self.__str__()
-    
+
     def __hash__(self):
         return hash((self.string, self.stress))
 
@@ -36,18 +36,19 @@ class Phoneme:
     def __ne__(self, other):
         # Not strictly necessary, but to avoid having both x==y and x!=y
         # True at the same time
-        return not(self == other)
+        return not (self == other)
 
-    def distance(self, other:"Phoneme", pdm:PhonemeDistanceMatrix|None=None) -> float:
+    def distance(self, other: "Phoneme", pdm: PhonemeDistanceMatrix | None = None) -> float:
         # this method necessarily needs to be symmetric
-        
+
         if pdm is None:
-            raise ValueError("PhonemeDistanceMatrix not loaded. Call Phoneme.load_pdm()")
-        
-        # calculate the difference in the string 
+            raise ValueError(
+                "PhonemeDistanceMatrix not loaded. Call Phoneme.load_pdm()")
+
+        # calculate the difference in the string
         distance_string = pdm[self][other]
-        
+
         #! calculate the difference in the stress
         distance_stress = 0
-        
+
         return distance_string + distance_stress
