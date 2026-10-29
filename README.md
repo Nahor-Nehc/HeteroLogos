@@ -63,18 +63,21 @@ We need to consider if the word has multiple possible pronounciations. If it doe
 We will try and link the two sequences of phonemes together using tags such as \[i\]gnore, \[o\]verhang, and \[f\]orce match.
 During linking, we will just go through the phonemes one at a time and link them together. If a phoneme is marked ignore, we skip it entirely. If it is marked force match, we force them to link. We can then calculate the entire distance for the linked phonemes between each force match, and then possibly remove/add ignore tags to minimise the distance.
 
-#### Trie
+ALTERNATIVE
+use Kondrak's alignment program
+
+### Trie
 
 In order to efficiently look up matches to an overhang, a Trie structure will be used. It results in a search time complexity of $O(n)$ and is faster than hashing as there is no need to compute a hash. (?verify?)
 
-##### Nodes
+#### Nodes
 
 (Need)
 Each node will contain a Phoneme (containing the string and the stress) and a list of all words which terminate at that phoneme. We do not want to create separate child nodes for each stress because it makes it easier to calculate strength of a suggestion (see later).
 
 We delegate finding the distance to the Phoneme.
 
-##### Phoneme
+#### Phoneme
 
 (Need)
 Contains the ARPABET string representation and the stress given by CMUdict
@@ -85,6 +88,7 @@ Contains the ARPABET string representation and the stress given by CMUdict
 The difference in stress is not too important but can improve the strength of the heterology. The difference between stressed and unstressed to primary and secondary stress is larger (and prioritised).
 
 It contains the method used for finding the distance between two phonemes.
+
 Naive method: we will use the SPE feature vectors and calculate a simple Hamming distance between the features of the feature vectors. We will use a PhonemeDistanceMatrix to hold the pre-calculated values for the phonemes' distance.
 
 Complex method: ??????
@@ -92,12 +96,17 @@ Complex method: ??????
 - compute weights for each feature from confusion matricies in research (consonants)
 - validate for vowels
 
+Ideal method:
+- use the matricies at [https://sites.google.com/site/similaritymatrices/publications] to find phoneme-wise distances
 
-##### Search
+Consider the idea of salience used by Kondrak 2002 [https://utoronto.scholaris.ca/server/api/core/bitstreams/4e55c1c2-74e3-4927-930f-cdd7b9636e98/content] 
+
+
+#### Search (depth first)
 
 (Need)
 The inputs are the trie and the list of phonemes to match.
-Once the end of the overhang is hit by the search, we can just output every word left in the subtree.
+Once the end of the overhang is hit by the search, we can just output every word left in the subtree
 
 We start a recursive search where each recursive state contains the following information:
 - position: current input phoneme index
@@ -107,6 +116,8 @@ We start a recursive search where each recursive state contains the following in
 - current score: accumulated phoneme distance
 - results: dictionary mapping word tuples ("sentences") to scores
 
+(will we reach recursion limit? depends on longest sequence of phonemes of a word so likely not)
+
 We compare the current input phoneme with every child phoneme of the current node using the Phoneme's distance method
 
 We then only proceed down to the children which meet a criteria/score threshold (!!!) in order to cut down the search space
@@ -115,8 +126,12 @@ If the child node contains words, we can add that word to the current sentence, 
 
 We then explore the same child (supposing it does not end on a word), recursively searching for a match for the next input phoneme but setting the next trie node to search to be the child.
 
-Once we reach the end of the , we add the accumulated sentence to the results.
+Once we reach the end of the graph, we add the accumulated sentence to the results.
 
-##### Search Pruning
+#### Search Pruning
 
 We need a way to cut down the search space because the CMUdict contains a vast quantity of possible words
+
+In order to do this, it could be useful to consider some concrete examples of what makes certain words feel closer in sound to others:
+- if the entire sequence consists of close, but not exactly the same phonemes vs if the entire sequence is the same apart from one large deviation?
+- 

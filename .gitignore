@@ -1,5 +1,6 @@
-__pycache__/Trie.cpython-312.pyc
+__pycache__
 *.pyc
 temp.py
 .DS_Store
 output.txt
+.venv
