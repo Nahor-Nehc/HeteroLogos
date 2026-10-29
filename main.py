@@ -1,4 +1,5 @@
 import pickle
+import os
 
 from components.Phoneme import Phoneme
 from components.PhonemeDistanceMatrix import PhonemeDistanceMatrix
@@ -9,7 +10,7 @@ from components.Trie import PhonemeTrie, TrieNode, create_trie
 create_trie()
 
 
-with open("cmudict_trie.pkl", "rb") as file:
+with open(os.path.join("data", "cmudict_trie.pkl"), "rb") as file:
     loaded_data:PhonemeTrie = pickle.load(file)
 
 print(type(loaded_data))

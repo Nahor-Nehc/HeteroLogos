@@ -1,13 +1,15 @@
 import pickle
+import os
+import json
+
 from components.Trie import PhonemeTrie, TrieNode
 from components.Phoneme import Phoneme
 from components.PhonemeDistanceMatrix import PhonemeDistanceMatrix
 
-import json
 
 
 
-with open("cmudict_trie.pkl", "rb") as file:
+with open(os.path.join("data", "cmudict_trie.pkl"), "rb") as file:
     loaded_data:PhonemeTrie = pickle.load(file)
 
 print(type(loaded_data))

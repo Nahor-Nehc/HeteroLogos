@@ -271,7 +271,7 @@ def create_baby_trie():
             phonemes = _entry[1:]
             trie.insert(word=word, phonemes=phonemes)
 
-    with open("baby_cmudict_trie.pkl", "wb") as file:
+    with open(os.path.join("data", "baby_cmudict_trie.pkl"), "wb") as file:
         pickle.dump(trie, file)
 
 
