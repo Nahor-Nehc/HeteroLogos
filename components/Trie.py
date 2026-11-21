@@ -19,8 +19,11 @@ class PhonemeTrie:
             os.path.join("assets", "arpabet_delta_matrix.csv"))
 
         # scoring parameters
-        self.spw_threshold = 2  # score per word threshold
+        self.dpw_threshold = 10  # distance per word threshold
+        
         self.max_children_checked = 4
+        # the max children checked is a useful measurement for strength as only
+        # the most closely aligned phonemes will advance to the next step
 
         # use this for debugging mainly
         self._max_print_depth = 50
@@ -95,7 +98,13 @@ class PhonemeTrie:
         # complexity and strength which we can pass into the helper _tile
 
         results = {}
-        self._tile(phonemes, 0, self.root, [], False, 0, results)
+        
+        #! set strength and complexity parameters here (dpw, etc...)
+        
+        self._tile(phonemes, 0, self.root, [], False, 0, 0, results)
+        
+        #! set strength and complexity parameters back to defaults
+        
         return results
 
     def get_all_words(self, start_node: TrieNode | None = None, inclusive: bool = True) -> list[str]:
@@ -120,7 +129,9 @@ class PhonemeTrie:
     def _tile(self, phonemes: list[Phoneme], position: int,
               current_node: TrieNode, current_sentence: list[str],
               word_added: bool,
-              current_score: float, results: dict[tuple[str, ...], float]):
+              current_distance: float, 
+              current_word_distance: float,
+              results: dict[tuple[str|tuple, ...], float]):
         """Recursively tiles the list of phonemes with a list of words
 
         :param phonemes: the list of phonemes to tile
@@ -133,11 +144,13 @@ class PhonemeTrie:
         :type current_sentence: list[str]
         :param word added: if a word was just added
         :type word added: bool
-        :param current_score: the score of the current sentence
-        :type current_score: float
+        :param current_distance: the distance of the current sentence
+        :type current_distance: float
+        :param current_word_distance: the distance of the current word
+        :type current_distance: float
         :param results: a dictionary of the results. the key is the
-        tuple of words and the value is the score
-        :type results: dict[tuple[str], float]
+        tuple of words and the value is the distance
+        :type results: dict[tuple[str|tuple], float]
         """
 
         # print()
@@ -150,15 +163,16 @@ class PhonemeTrie:
                 # check enough syllables
                 if word_added:
                     # add the accumulated sentence to the results
-                    results[tuple(current_sentence)] = current_score
+                    results[tuple(current_sentence)] = current_distance
 
                 else:
                     # flush the rest of the node and add to results
                     remaining_words = self.get_all_words(current_node, False)
-
-                    for remaining_word in remaining_words:
-                        results[tuple(current_sentence +
-                                      [remaining_word])] = current_score
+                    
+                    #! temporarily cap number of leftover words
+                    
+                    result = [*current_sentence, tuple(remaining_words[:5])]
+                    results[tuple(result)] = current_distance
 
             return None
 
@@ -168,9 +182,9 @@ class PhonemeTrie:
             # sentences down this branch which can tile the phonemes
             return None
 
-        # calculate the score per word
+        # calculate the distance per word
         if current_sentence:
-            if current_score/len(current_sentence) >= self.spw_threshold:
+            if current_word_distance >= self.dpw_threshold:
                 return None
 
         # get the next phoneme
@@ -181,29 +195,36 @@ class PhonemeTrie:
         scored_children: list[tuple[Phoneme, float]] = []
         for child_phoneme, child_node in current_node.children.items():
 
-            # score strength
+            # calculate strength
             child_distance = phoneme.distance(child_phoneme, self.pdm)
 
             scored_children.append((child_phoneme, child_distance))
 
-        # take the best scores (lowest)
+        # take the lowest distances
         scored_children.sort(key=lambda x: x[1])
         # ? temporary solution
         nodes_to_check = scored_children[:self.max_children_checked]
 
         # print(nodes_to_check)
 
-        for child_phoneme, child_score in nodes_to_check:
+        for child_phoneme, child_distance in nodes_to_check:
             # check there are terminating words
             words = current_node.children[child_phoneme].words
 
             if words:
                 for word in words:
 
-                    # score complexity
-                    # ? temporary solution -> longer words means better score
+                    # calculate complexity
+                    # ? temporary solution -> longer words means lower distance
                     # ? penalise short words
-                    child_score /= 2**len(word) / 8
+                    # ? we need a way to penalise short words which tile the phoneme exactly e.g. 'a'
+                    addition = current_word_distance + child_distance
+                    factor = 10 / len(word)
+                    scaled_current_word_distance = (addition) * factor
+                    
+                    new_current_distance = current_distance - \
+                                           current_word_distance + \
+                                           scaled_current_word_distance
 
                     # tile on root node
                     self._tile(
@@ -212,7 +233,8 @@ class PhonemeTrie:
                         current_node=self.root,
                         current_sentence=current_sentence + [word],
                         word_added=True,
-                        current_score=current_score + child_score,
+                        current_distance=new_current_distance,
+                        current_word_distance=0,
                         results=results)
 
             # then tile on child node
@@ -222,7 +244,8 @@ class PhonemeTrie:
                 current_node=current_node.children[child_phoneme],
                 current_sentence=current_sentence,
                 word_added=False,
-                current_score=current_score + child_score,
+                current_distance=current_distance + child_distance,
+                current_word_distance=current_word_distance + child_distance,
                 results=results
             )
 
