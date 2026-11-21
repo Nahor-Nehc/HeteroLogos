@@ -16,7 +16,7 @@ class PhonemeTrie:
     def __init__(self):
         self.root = TrieNode()
         self.pdm = PhonemeDistanceMatrix(
-            os.path.join("assets", "arpabet_ch_distance_matrix.csv"))
+            os.path.join("assets", "arpabet_delta_matrix.csv"))
 
         # scoring parameters
         self.spw_threshold = 2  # score per word threshold
@@ -234,7 +234,7 @@ def remove_comments(s: str) -> str:
 def create_trie():
     import pickle
 
-    with open("cmudict.txt", "r") as f:
+    with open(os.path.join("data", "cmudict.txt"), "r") as f:
         text = f.read()
 
         cmudict = text.splitlines()
@@ -249,7 +249,7 @@ def create_trie():
             phonemes = _entry[1:]
             trie.insert(word=word, phonemes=phonemes)
 
-    with open("cmudict_trie.pkl", "wb") as file:
+    with open(os.path.join("data", "cmudict_trie.pkl"), "wb") as file:
         pickle.dump(trie, file)
 
     # print(trie)

@@ -5,10 +5,12 @@ class PhonemeDistanceRow:
     def __init__(self, row_data: list[float | int], row_headers: list[str]):
         self._dict = {}
 
+        # double check correct sizing
         if len(row_data) != len(row_headers):
             raise ValueError(f"row_data {len(row_data)} and row_headers \
                 {len(row_headers)} have mismatched lengths")
 
+        # construct dictionary
         for i in range(len(row_data)):
             self._dict[row_headers[i]] = float(row_data[i])
 

@@ -1,5 +1,6 @@
 """
 Created by Claude 19/11/2026
+Modified by Rohan 19/11/2026
 
 Build an ARPABET x ARPABET distance matrix from nltk.metrics.aline.delta.
 
@@ -20,18 +21,10 @@ Design notes
 * ALINE has no lax vowels or r-coloured vowels, so we add 'ɪ' (near-high),
   make 'ʊ' near-high, and build 'ɚ' as 'ɜ' + retroflex.
 """
-import importlib.util
-import sys
+
 import csv
 import itertools
-
-if len(sys.argv) > 1:
-    sys.path.insert(0, "/home/claude/stub")  # stub for nltk.termsec when loading a raw copy
-    spec = importlib.util.spec_from_file_location("aline", sys.argv[1])
-    aline = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(aline)
-else:
-    from nltk.metrics import aline
+from nltk.metrics import aline
 
 fm, sim = aline.feature_matrix, aline.similarity_matrix
 
@@ -67,8 +60,7 @@ for segs in ARPA.values():
     for s in segs:
         assert s in fm, s
 
-ONSET_WEIGHT = 0.5  # weight of first component in diphthong comparisons
-
+ONSET_WEIGHT = 0.7  # weight of first component in diphthong comparisons - prioritise onset vowel sound
 
 def dist(P, Q, w=ONSET_WEIGHT):
     if len(P) == 1 and len(Q) == 1:
@@ -84,7 +76,7 @@ names = list(ARPA)
 M = {(a, b): dist(ARPA[a], ARPA[b]) for a in names for b in names}
 
 if __name__ == "__main__":
-    out = sys.argv[2] if len(sys.argv) > 2 else "arpabet_delta_matrix.csv"
+    out = "arpabet_delta_matrix.csv"
     with open(out, "w", newline="") as f:
         wr = csv.writer(f)
         wr.writerow([""] + names)
