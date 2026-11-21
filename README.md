@@ -118,9 +118,10 @@ We start a recursive search where each recursive state contains the following in
 
 (will we reach recursion limit? depends on longest sequence of phonemes of a word so likely not)
 
-We compare the current input phoneme with every child phoneme of the current node using the Phoneme's distance method
+We compare the current input phoneme with every child phoneme of the current node using the Phoneme's distance method.
 
-We then only proceed down to the children which meet a criteria/score threshold (!!!) in order to cut down the search space
+We then only proceed down to the children which meet a distance per word threshold in order to cut down the search space. The fewer children we proceed with yields increased strength as only the most closely fitting phonemes will continue. But also leads to reduced complexity as small single phoneme words will be able to score 0.
+
 
 If the child node contains words, we can add that word to the current sentence, then recursively search for matches for the next input phoneme -- passing on an updated score as well, and setting the next trie node to search to be the root.
 
@@ -130,8 +131,16 @@ Once we reach the end of the graph, we add the accumulated sentence to the resul
 
 #### Search Pruning
 
-We need a way to cut down the search space because the CMUdict contains a vast quantity of possible words
+We need a way to cut down the search space because the CMUdict contains a vast quantity of possible words.
 
 In order to do this, it could be useful to consider some concrete examples of what makes certain words feel closer in sound to others:
 - if the entire sequence consists of close, but not exactly the same phonemes vs if the entire sequence is the same apart from one large deviation?
 - 
+
+
+# Notes for me
+
+
+add additional value to distance for complexity (+10 * (n/len(word))) maybe
+because exact small words score 0 - which doesn't allow for multiplicative factoring of current_word_distance
+
