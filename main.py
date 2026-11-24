@@ -25,9 +25,41 @@ print("Time taken to tile:", end - start)
 #     print(t, ":", v)
 
 print()
-print("Best distances")
+print("Best distances + complexity")
 
 best = sorted(list(tilings.items()), key=lambda x: sum(x[-1]))
+
+most_residue = 3
+for t, v in best[:10]:
+    t_ = t
+    if isinstance(t[-1], tuple):
+        if len(t[-1]) > most_residue:
+            t_ = list(t)
+            t_[-1] = ",".join(t[-1][0:most_residue]) + ", ..."
+            t_ = tuple(t_)
+
+    print(t_, ":", v)
+    
+print()
+print("Best complexity")
+
+best = sorted(list(tilings.items()), key=lambda x: (x[-1][1]))
+
+most_residue = 3
+for t, v in best[:10]:
+    t_ = t
+    if isinstance(t[-1], tuple):
+        if len(t[-1]) > most_residue:
+            t_ = list(t)
+            t_[-1] = ",".join(t[-1][0:most_residue]) + ", ..."
+            t_ = tuple(t_)
+
+    print(t_, ":", v)
+
+print()
+print("Best distances")
+
+best = sorted(list(tilings.items()), key=lambda x: (x[-1][0]))
 
 most_residue = 3
 for t, v in best[:10]:

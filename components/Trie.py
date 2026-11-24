@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 from components.Phoneme import Phoneme
 from components.PhonemeDistanceMatrix import PhonemeDistanceMatrix
@@ -21,8 +22,9 @@ class PhonemeTrie:
         #* scoring parameters
         
         #* complexity
-        self.phoneme_weight = 20 # the cost per phoneme
+        self.phoneme_weight = 5 # the cost per phoneme
         self.length_factor = 6
+        self.exponent = 3
         # each phoneme gets the above cost, which is then multiplied by x.
         # x is the length_factor divided by the length of the word.
         # This increases complexity as it incentivises longer words.
@@ -157,7 +159,7 @@ class PhonemeTrie:
     
     def _calculate_complexity(self, current_phoneme_number, word):
         child_complexity = self.phoneme_weight * current_phoneme_number
-        child_complexity *= self.length_factor / len(word)
+        child_complexity *= (self.length_factor ** self.exponent) / (len(word) ** self.exponent)
         return child_complexity
 
     def _tile(self, phonemes: list[Phoneme], position: int,
@@ -188,30 +190,35 @@ class PhonemeTrie:
         :type results: dict[tuple[str|tuple], tuple[float, float]]
         """
 
-        # print()
-        # print(f"_tile: {phonemes}, pos {position}")
-
         # check we have reached the end
         if position >= len(phonemes):
-            if current_sentence:
+            if not current_sentence:
+                return None
 
-                # check enough syllables
-                if word_added:
-                    # add the accumulated sentence to the results
-                    results[tuple(current_sentence)] = (current_distance, current_complexity)
+            # check enough syllables
+            if word_added:
+                # add the accumulated sentence to the results
+                results[tuple(current_sentence)] = (current_distance, current_complexity)
 
-                else:
-                    # flush the rest of the node and add to results
-                    remaining_words = self.get_all_words(current_node, False)
-                    
-                    #! add some value to current complexity
-                    
-                    #! temporarily cap number of leftover words
-                    result = [*current_sentence, tuple(remaining_words[:5])]
-                    results[tuple(result)] = (current_distance, current_complexity)
+            else:
+                # flush the rest of the node and add to results
+                remaining_words = self.get_all_words(current_node, False)
+                
+                if not remaining_words:
+                    return None
+                
+                min_len = np.min([len(w) for w in remaining_words])
+                
+                #! add some value to current complexity
+                added_complexity = self._calculate_complexity(current_phoneme_number, "a" * int(min_len))
+                
+                #! temporarily cap number of leftover words
+                result = [*current_sentence, tuple(remaining_words[:5])]
+                results[tuple(result)] = (current_distance, current_complexity+added_complexity)
 
             return None
-
+        
+            
         # check node has no more children
         if not current_node.children:
             # do not add the accumulated sentence as there are no possible
@@ -266,7 +273,7 @@ class PhonemeTrie:
                         current_node=self.root,
                         current_sentence=current_sentence + [word],
                         word_added=True,
-                        current_distance=current_distance,
+                        current_distance=current_distance + child_distance,
                         current_phoneme_number=0,
                         current_complexity=current_complexity + child_complexity,
                         results=results)
