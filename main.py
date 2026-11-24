@@ -11,29 +11,23 @@ create_trie()
 print("hi")
 
 with open(os.path.join("data", "cmudict_trie.pkl"), "rb") as file:
-    loaded_data:PhonemeTrie = pickle.load(file)
-    print(loaded_data.dpw_threshold)
-    
+    loaded_data:PhonemeTrie = pickle.load(file)    
 
-print(type(loaded_data))
-print(loaded_data)
-# print(loaded_data.get_all_words())
 t1 = [Phoneme("AH"), Phoneme("B"), Phoneme("EY"), Phoneme("T"), Phoneme("IH"), Phoneme("D")]
-start = time.perf_counter_ns()
+start = time.perf_counter()
 tilings = loaded_data.find_tilings(t1)
-end = time.perf_counter_ns()
+end = time.perf_counter()
 
 print("Time taken to tile:", end - start)
-print()
-print("All results")
-for t, v in tilings.items():
-    print(t, ":", v)
+# print()
+# print("All results")
+# for t, v in tilings.items():
+#     print(t, ":", v)
 
 print()
 print("Best distances")
 
-best = sorted(list(tilings.items()), key=lambda x: x[-1])
-print(best[:10])
+best = sorted(list(tilings.items()), key=lambda x: sum(x[-1]))
 
 most_residue = 3
 for t, v in best[:10]:
